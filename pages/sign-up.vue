@@ -4,7 +4,7 @@ import { useUser } from '~/composables/states'
 import type { FormError } from '#ui/types'
 
 useHead({
-  title: 'Sign up'
+  title: 'Sign up',
 })
 
 const appConfig = useAppConfig()
@@ -54,7 +54,6 @@ async function onSubmit() {
   // Save the execution id to keep track of workflow status
   state.executionId = signInRes.id
 }
-
 
 const fetchStatus = async () => {
   const res = await $fetch(`/api/status/${state.executionId}`)
@@ -114,60 +113,28 @@ watch(
   () => user.value,
   () => clearInterval(intervalId.value)
 )
-
 </script>
 
 <template>
   <UContainer>
     <UCard class="p-8 max-w-md mx-auto overflow-hidden">
       <div>
-        <img
-          class="mx-auto h-10 w-auto"
-          src="~/assets/globe.png"
-          alt="Your Company"
-        >
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <img class="mx-auto h-10 w-auto" src="~/assets/globe.png" alt="Your Company" />
+        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
           Sign up for a {{ appConfig.brand }} account
         </h2>
       </div>
 
-      <transition
-        class="mt-10 h-64"
-        name="fade"
-        mode="out-in"
-      >
-        <div
-          v-if="state.status === 'form'"
-          key="form"
-        >
-          <UForm
-            :validate="validate"
-            :state="state"
-            class="space-y-4"
-            @submit="onSubmit"
-          >
-            <UFormGroup
-              label="Name"
-              name="name"
-            >
+      <transition class="mt-10 h-64" name="fade" mode="out-in">
+        <div v-if="state.status === 'form'" key="form">
+          <UForm :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
+            <UFormGroup label="Name" name="name">
               <UInput v-model="state.name" />
             </UFormGroup>
-            <UFormGroup
-              label="Email"
-              name="email"
-            >
-              <UInput
-                v-model="state.email"
-                type="email"
-              />
+            <UFormGroup label="Email" name="email">
+              <UInput v-model="state.email" type="email" />
             </UFormGroup>
-            <UButton
-              :loading="state.isLoading"
-              type="submit"
-              class="flex w-full justify-center"
-            >
-              Sign up
-            </UButton>
+            <UButton :loading="state.isLoading" type="submit" class="flex w-full justify-center"> Sign up </UButton>
           </UForm>
           <p class="mt-10 text-center text-sm text-gray-500">
             Already have an account?
@@ -200,11 +167,7 @@ watch(
             to scan the QR code.
           </p>
         </div>
-        <div
-          v-else
-          key="credentialIssued"
-          class="grid text-center items-center justify-center h-64 w-full mx-auto"
-        >
+        <div v-else key="credentialIssued" class="grid text-center items-center justify-center h-64 w-full mx-auto">
           <p>Accept the credential in your wallet to complete the sign up process.</p>
         </div>
       </transition>
