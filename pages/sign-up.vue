@@ -20,7 +20,8 @@ const state = reactive({
   status: 'form',
   executionId: '',
   invitationUrl: '',
-  connectionId: '',
+  // from connecitonId to offerId
+  offerId: '',
 })
 
 const validate = (state: any): FormError[] => {
@@ -37,45 +38,38 @@ async function onSubmit() {
   const userExists = await $fetch(`/api/users/${state.email}`)
 
   if (userExists.user) {
+    console.dir(`exist? ${userExists.user.email}`)
     toast.add({ title: 'Email already exists. Please use a different email.' })
     state.isLoading = false
     return
   }
 
-  // Start the sign up workflow after validation
-  const signInRes = await $fetch(`/api/start/${runtimeConfig.public.SIGN_UP_WORKFLOW_ID}`, {
-    method: 'POST',
-    body: {
-      name: state.name,
-      email: state.email,
-    },
-  })
-
-  // Save the execution id to keep track of workflow status
-  state.executionId = signInRes.id
+  // new user? Then initiate the offer
+  const offer = await getOffer()
+  console.log(offer)
+  state.invitationUrl = offer.offerUri
+  state.offerId = offer.id
 }
 
-const fetchStatus = async () => {
-  const res = await $fetch(`/api/status/${state.executionId}`)
-
-  // We create a connection and render the QR-code in the client.
-  // Workflow will automatically continue after the QR is scanned and the connection is set up.
-  if (res.status === 'waitingForTrigger' && Object.keys(res.actions).length === 1) {
+const offerStatus = async () => {
+  // We  render the QR-code in the client.
+  console.log(`invitationUrl:  ${state.invitationUrl}`)
+  if (state.invitationUrl) {
     state.isLoading = false
-    state.invitationUrl = res.actions.createConnection.output.invitationUrl
     state.status = 'connect'
   }
 
   // Credential has been issued (2nd action) and we can now render a message to the user
   // prompting them to accept the credential notification in their wallet.
-  if (res.status === 'waitingForTrigger' && Object.keys(res.actions).length === 2) {
-    state.status = 'credentialIssued'
-  }
+  // if (res.status === 'waitingForTrigger' && Object.keys(res.actions).length === 2) {
+  //   state.status = 'credentialIssued'
+  // }
 
+  const cred = await getOfferedCred()
   // Credential has been successfully issued and sign up process is completed.
-  if (res.status === 'completed') {
+  console.log(`status is: ${cred}`)
+  if (cred.status === 'completed') {
     state.status = 'completed'
-    state.connectionId = res.actions.createConnection.output.connection.connectionId
     await onCompleted()
   }
 }
@@ -87,7 +81,7 @@ async function onCompleted() {
     body: {
       email: state.email,
       name: state.name,
-      connectionId: state.connectionId,
+      connectionId: state.offerId,
     },
   })
 
@@ -100,8 +94,10 @@ async function onCompleted() {
 // This can be improved by using Webhooks (https://docs.paradym.id/working-with-executions/using-webhooks)
 onMounted(async () => {
   intervalId.value = setInterval(async () => {
-    if (state.executionId && !user.value) await fetchStatus()
+    if (state.invitationUrl && !user.value) await offerStatus()
   }, 2000)
+  // const offer = await getOffer()
+  // console.log(offer)
 })
 
 onUnmounted(async () => {
@@ -113,6 +109,30 @@ watch(
   () => user.value,
   () => clearInterval(intervalId.value)
 )
+// extra code
+const getOffer = async () => {
+  const response = await fetch(`api/start/offer`, {
+    method: 'POST',
+    body: JSON.stringify({
+      credentials: [
+        {
+          credentialTemplateId: runtimeConfig.public.PARADYM_TEMPLATE_ID,
+          attributes: {
+            name: 'John Doe',
+            student_number: 12345678,
+          },
+        },
+      ],
+    }),
+  })
+  return response.json()
+}
+
+const getOfferedCred = async () => {
+  const res = await fetch(`/api/offerStatus/${state.offerId}`)
+  const offeredCred = res.json()
+  return offeredCred
+}
 </script>
 
 <template>
