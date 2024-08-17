@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePageTitle, useUser } from '~/composables/states'
+import { useUser } from '~/composables/states'
 
 import type { FormError } from '#ui/types'
 
@@ -85,9 +85,9 @@ async function onCompleted() {
     },
   })
 
-  // Add user to state and redirect to dashboard
-  user.value = usr.newUser
-  await navigateTo('/')
+  // Add user to state, this one not needed as we are assuming we are dealing with issuer
+  // user.value = usr.newUser
+  await navigateTo('/login')
 }
 
 // To keep this demo simple, we use polling to periodically check on the status of the execution
