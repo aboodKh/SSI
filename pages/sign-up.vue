@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUser } from '~/composables/states'
+import { usePageTitle, useUser } from '~/composables/states'
 
 import type { FormError } from '#ui/types'
 
@@ -134,15 +134,20 @@ const getOfferedCred = async () => {
   const offeredCred = res.json()
   return offeredCred
 }
+
+// const route = useRoute()
+// const t = usePageTitle()
+// //@ts-ignore
+// t.value = route.meta.title
 </script>
 
 <template>
   <UContainer>
     <UCard class="p-8 max-w-md mx-auto overflow-hidden">
       <div>
-        <img class="mx-auto h-10 w-auto" src="~/assets/globe.png" alt="Your Company" />
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
-          Sign up for a {{ appConfig.brand }} account
+        <img class="mx-auto h-20 w-auto" src="~/assets/Hippo_JPG-uvalogo_tag_p.jpg" alt="Your Company" />
+        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+          Sign up for a {{ appConfig.issuer.name }} digital credential
         </h2>
       </div>
 

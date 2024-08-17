@@ -1,5 +1,11 @@
 export default defineAppConfig({
-  brand: 'Emerald Trust Bank',
+  issuer: {
+    name: 'UvA',
+  },
+  RP: {
+    name: 'LifeWatch ERIC-NaaVRE',
+  },
+  brand: 'Decentralized Authentication POC',
   ui: {
     primary: 'emerald',
     gray: 'cool',

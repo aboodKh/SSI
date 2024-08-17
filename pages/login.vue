@@ -107,9 +107,9 @@ watch(
   <UContainer>
     <UCard class="p-8 max-w-md mx-auto">
       <div>
-        <img class="mx-auto h-10 w-auto" src="~/assets/globe.png" alt="Your Company" />
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-sky-900">
-          Log in to your {{ appConfig.brand }} account
+        <img class="mx-auto h-20 w-auto" src="~/assets/eric.svg" alt="Your Company" />
+        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+          Log in to your {{ appConfig.RP.name }} account
         </h2>
 
         <div class="flex flex-col items-center justify-between sm:mx-auto sm:w-full sm:max-w-sm h-80">
@@ -132,7 +132,7 @@ watch(
               to scan the QR code.
             </p>
             <p class="mt-4 text-center text-sm text-gray-500">
-              New to {{ appConfig.brand }}?
+              Don't have {{ appConfig.issuer.name }} credential card ?
               {{ ' ' }}
               <ULink
                 active-class="text-primary"

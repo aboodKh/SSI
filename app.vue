@@ -3,8 +3,8 @@ const appConfig = useAppConfig()
 
 useHead({
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - ${appConfig.brand}` : appConfig.brand;
-  }
+    return titleChunk ? `${titleChunk} - ${appConfig.brand}` : appConfig.brand
+  },
 })
 
 const user = useUser()
@@ -17,7 +17,6 @@ onMounted(async () => {
     navigateTo('/')
   }
 })
-
 </script>
 
 <template>
