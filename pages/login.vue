@@ -53,8 +53,9 @@ const fetchStatus = async () => {
   const vId = await getVerificationSession()
   // Fetch user based on the presented email address from the credential
   if (vId.status === 'verified') {
-    const email = vId.credentials[0].email
-
+    const email = vId.credentials[0].presentedAttributes.email
+    console.log(`vId: ${JSON.stringify(vId)}`)
+    console.log(`vId.presentedAttributes.email: ${vId.credentials[0].presentedAttributes.email}`)
     const userResponse = await $fetch(`/api/users/${email}`)
 
     if (!userResponse || !userResponse.user) {
@@ -80,6 +81,7 @@ onMounted(async () => {
 
   const vReq = await getVReq()
   console.log(vReq)
+  console.log(`vReq.credentials: ${vReq.credentials}`)
   const authzUrl = vReq.authorizationRequestUri
   state.url = authzUrl
   state.sessionId = vReq.id

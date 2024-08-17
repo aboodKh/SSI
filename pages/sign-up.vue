@@ -119,6 +119,7 @@ const getOffer = async () => {
           credentialTemplateId: runtimeConfig.public.PARADYM_TEMPLATE_ID,
           attributes: {
             name: state.name,
+            email: state.email,
             student_number: 12345678,
           },
         },
