@@ -2,10 +2,10 @@
 import { useUser } from '~/composables/states'
 import { capitalizeFirstLetter } from '~/components/utils'
 
-import { BanknotesIcon, CheckBadgeIcon, ClockIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { BanknotesIcon, BeakerIcon, CheckBadgeIcon, ClockIcon, UsersIcon } from '@heroicons/vue/24/outline'
 
 useHead({
-  title: 'Dashboard'
+  title: 'Dashboard',
 })
 
 // Add auth middleware so that his page is restricted for authenticated users
@@ -18,9 +18,9 @@ const name = capitalizeFirstLetter(user.value?.name ?? 'Stranger')
 
 // Dashboard dummy data
 const stats = [
-  { label: 'Current Balance', value: '€5,200' },
-  { label: 'Savings Balance', value: '€12,300' },
-  { label: 'Credit Card Limit', value: '€3,000' },
+  { label: 'running workflows', value: '1' },
+  { label: 'completed worflows', value: '2' },
+  { label: 'deleted workflows', value: '3' },
 ]
 
 const actions = [
@@ -46,7 +46,7 @@ const actions = [
     iconBackground: 'bg-sky-50',
   },
   {
-    icon: BanknotesIcon,
+    icon: BeakerIcon,
     name: 'Transfer Funds',
     href: '#',
     iconForeground: 'text-yellow-700',
@@ -57,59 +57,44 @@ const actions = [
 const announcements = [
   {
     id: 1,
-    title: 'New Savings Plan Available',
+    title: 'New cluster nodes',
     href: '#',
-    preview:
-      'Explore our new high-interest savings plan. Save more and earn more with competitive interest rates and flexible terms.',
+    preview: 'Faster node types for your upcoming workflows!',
   },
   {
     id: 2,
-    title: 'Updated Banking Fees',
+    title: 'You are running out of credits',
     href: '#',
-    preview:
-      'We’ve updated our banking fees. Please review the changes to stay informed about your account charges and benefits.',
+    preview: 'your credits balance is ...',
   },
   {
     id: 3,
     title: 'Mobile App Update',
     href: '#',
-    preview:
-      'Our mobile banking app has been updated with new features for easier account management. Update now for a better banking experience.',
+    preview: 'Our mobile app ...',
   },
 ]
-
 </script>
 
 <template>
   <UContainer class="h-full w-full items-center justify-center p-16">
     <main class="pb-8">
       <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h1 class="sr-only">
-          Profile
-        </h1>
+        <h1 class="sr-only">Profile</h1>
         <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-8">
           <div class="grid grid-cols-1 gap-4 lg:col-span-2">
             <section aria-labelledby="profile-overview-title">
               <div class="overflow-hidden rounded-lg bg-white shadow">
-                <h2
-                  id="profile-overview-title"
-                  class="sr-only"
-                >
-                  Profile Overview
-                </h2>
+                <h2 id="profile-overview-title" class="sr-only">Profile Overview</h2>
                 <div class="bg-white p-6">
                   <div class="sm:flex sm:items-center sm:justify-between">
                     <div class="sm:flex sm:space-x-5">
                       <div class="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-                        <p class="text-sm font-medium text-gray-600">
-                          Welcome back,
-                        </p>
+                        <p class="text-sm font-medium text-gray-600">Welcome back,</p>
                         <p class="text-xl font-bold text-gray-900 sm:text-2xl">
                           {{ name }}
                         </p>
-                        <p class="text-sm font-medium text-gray-600">
-                          Customer
-                        </p>
+                        <p class="text-sm font-medium text-gray-600">researcher</p>
                       </div>
                     </div>
                     <div class="mt-5 flex justify-center sm:mt-0">
@@ -124,11 +109,7 @@ const announcements = [
                 <div
                   class="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
                 >
-                  <div
-                    v-for="stat in stats"
-                    :key="stat.label"
-                    class="px-6 py-5 text-center text-sm font-medium"
-                  >
+                  <div v-for="stat in stats" :key="stat.label" class="px-6 py-5 text-center text-sm font-medium">
                     <span class="text-gray-900">{{ stat.value }}</span>
                     {{ ' ' }}
                     <span class="text-gray-600">{{ stat.label }}</span>
@@ -141,12 +122,7 @@ const announcements = [
               <div
                 class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0"
               >
-                <h2
-                  id="quick-links-title"
-                  class="sr-only"
-                >
-                  Quick links
-                </h2>
+                <h2 id="quick-links-title" class="sr-only">Quick links</h2>
                 <div
                   v-for="(action, actionIdx) in actions"
                   :key="action.name"
@@ -166,23 +142,13 @@ const announcements = [
                         'inline-flex rounded-lg p-3 ring-4 ring-white',
                       ]"
                     >
-                      <component
-                        :is="action.icon"
-                        class="h-6 w-6"
-                        aria-hidden="true"
-                      />
+                      <component :is="action.icon" class="h-6 w-6" aria-hidden="true" />
                     </span>
                   </div>
                   <div class="mt-8">
                     <h3 class="text-lg font-medium">
-                      <a
-                        :href="action.href"
-                        class="focus:outline-none"
-                      >
-                        <span
-                          class="absolute inset-0"
-                          aria-hidden="true"
-                        />
+                      <a :href="action.href" class="focus:outline-none">
+                        <span class="absolute inset-0" aria-hidden="true" />
                         {{ action.name }}
                       </a>
                     </h3>
@@ -195,11 +161,7 @@ const announcements = [
                     class="pointer-events-none absolute right-6 top-6 text-gray-300 group-hover:text-gray-400"
                     aria-hidden="true"
                   >
-                    <svg
-                      class="h-6 w-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path
                         d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"
                       />
@@ -214,32 +176,14 @@ const announcements = [
             <section aria-labelledby="announcements-title">
               <div class="overflow-hidden rounded-lg bg-white shadow">
                 <div class="p-6">
-                  <h2
-                    id="announcements-title"
-                    class="text-base font-medium text-gray-900"
-                  >
-                    Announcements
-                  </h2>
+                  <h2 id="announcements-title" class="text-base font-medium text-gray-900">Announcements</h2>
                   <div class="mt-6 flow-root">
-                    <ul
-                      role="list"
-                      class="-my-5 divide-y divide-gray-200"
-                    >
-                      <li
-                        v-for="announcement in announcements"
-                        :key="announcement.id"
-                        class="py-5"
-                      >
+                    <ul role="list" class="-my-5 divide-y divide-gray-200">
+                      <li v-for="announcement in announcements" :key="announcement.id" class="py-5">
                         <div class="relative focus-within:ring-2 focus-within:ring-cyan-500">
                           <h3 class="text-sm font-semibold text-gray-800">
-                            <a
-                              :href="announcement.href"
-                              class="hover:underline focus:outline-none"
-                            >
-                              <span
-                                class="absolute inset-0"
-                                aria-hidden="true"
-                              />
+                            <a :href="announcement.href" class="hover:underline focus:outline-none">
+                              <span class="absolute inset-0" aria-hidden="true" />
                               {{ announcement.title }}
                             </a>
                           </h3>
