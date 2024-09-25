@@ -67,7 +67,7 @@ const offerStatus = async () => {
 
   const cred = await getOfferedCred()
   // Credential has been successfully issued and sign up process is completed.
-  console.log(`status is: ${cred}`)
+  console.log(`status is: ${JSON.stringify(cred)}`)
   if (cred.status === 'completed') {
     state.status = 'completed'
     await onCompleted()

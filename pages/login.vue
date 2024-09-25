@@ -81,12 +81,10 @@ onMounted(async () => {
 
   const vReq = await getVReq()
   console.log(vReq)
-  console.log(`vReq.credentials: ${vReq.credentials}`)
+  console.log(`vReq: ${JSON.stringify(vReq)}`)
   const authzUrl = vReq.authorizationRequestUri
   state.url = authzUrl
   state.sessionId = vReq.id
-  // To keep this demo simple, we use polling to periodically check on the status of the execution
-  // This can be improved by using Webhooks (https://docs.paradym.id/working-with-executions/using-webhooks)
   intervalId.value = setInterval(async () => {
     if (state.url && !user.value) await fetchStatus()
   }, 2000)
